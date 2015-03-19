@@ -1,0 +1,28 @@
+{
+  "name": "gigorok/querybuilder",
+  "description": "The open source query builder library",
+  "keywords": [
+    "query",
+    "builder",
+    "php"
+  ],
+  "license": "MIT",
+  "type": "library",
+  "homepage": "http://github.com/gigorok/querybuilder",
+  "authors": [
+    {
+      "name": "Igor Gonchar",
+      "email": "gigorok@gmail.com",
+      "homepage": "http://gigorok.name"
+    }
+  ],
+  "autoload": {
+    "psr-4": {"QueryBuilder\\": "src/"}
+  },
+  "require": {
+    "php": ">=5.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.5.*"
+  }
+}
