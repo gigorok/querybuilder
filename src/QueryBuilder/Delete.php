@@ -17,16 +17,6 @@ use QueryBuilder\QueryBuilder;
 class Delete extends Base
 {
     /**
-     * @var string
-     */
-    protected $table_name = null;
-
-    /**
-     * @var array
-     */
-    protected $where = [];
-
-    /**
      * @param $table_name string|null
      * @return Delete
      */
@@ -47,42 +37,15 @@ class Delete extends Base
     }
 
     /**
-     * @param $key
-     * @param $value
-     * @return $this
-     */
-    function where($key, $value)
-    {
-        $this->where[$key] = $value;
-
-        return $this;
-    }
-
-    /**
      * @return string
      */
     protected function buildQuery()
     {
         return sprintf(
             "DELETE FROM %s%s",
-            $this->table_name,
+            $this->tableName(),
             $this->buildWhere()
         );
-    }
-
-    /**
-     * @return string
-     */
-    protected function buildWhere()
-    {
-        return count($this->where) > 0 ? " WHERE " . implode(' AND ', array_map(function($prop) {
-                if(is_null($this->where[$prop])) {
-                    unset($this->where[$prop]);
-                    return sprintf("%s IS NULL", $prop);
-                } else {
-                    return sprintf("%s = :w%s", $prop, $prop);
-                }
-            }, array_keys($this->where))) : '';
     }
 
     /**

@@ -20,11 +20,6 @@ class QueryBuilder
     const QUERY_TYPE_SELECT = "select";
 
     /**
-     * @var \PDO|null
-     */
-    static $pdo = null;
-
-    /**
      * @var string
      */
     protected $query_type = self::QUERY_TYPE_SELECT;
@@ -40,11 +35,6 @@ class QueryBuilder
     function getQueryType()
     {
         return $this->query_type;
-    }
-
-    function __construct(\PDO $pdo = null)
-    {
-        self::$pdo = $pdo;
     }
 
     /**

@@ -16,9 +16,27 @@ use QueryBuilder\QueryBuilder;
 abstract class Base
 {
     /**
+     * @var string|null
+     */
+    protected $table_name = null;
+
+    /**
+     * @var array
+     */
+    protected $where = [];
+
+    /**
      * @return string
      */
     abstract protected function buildQuery();
+
+    /**
+     * @return string
+     */
+    protected function tableName()
+    {
+        return $this->table_name;
+    }
 
     /**
      * @return string
@@ -37,13 +55,29 @@ abstract class Base
     }
 
     /**
-     * @param $string
-     * @param int $parameter_type
-     * @return string
+     * @param $key string
+     * @param $value
+     * @return $this
      */
-    protected function quote($string, $parameter_type = \PDO::PARAM_STR)
+    function where($key, $value)
     {
-        return is_null(QueryBuilder::$pdo) ? $string : QueryBuilder::$pdo->quote($string, $parameter_type);
+        $this->where[$key] = $value;
+
+        return $this;
     }
 
+    /**
+     * @return string
+     */
+    protected function buildWhere()
+    {
+        return count($this->where) > 0 ? " WHERE " . implode(' AND ', array_map(function($prop) {
+                if(is_null($this->where[$prop])) {
+                    unset($this->where[$prop]);
+                    return sprintf("%s IS NULL", $prop);
+                } else {
+                    return sprintf("%s = :w%s", $prop, $prop);
+                }
+            }, array_keys($this->where))) : '';
+    }
 }

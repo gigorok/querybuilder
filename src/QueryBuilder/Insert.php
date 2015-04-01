@@ -19,17 +19,12 @@ class Insert extends Base
     /**
      * @var string
      */
-    protected $table_name = null;
-
-    /**
-     * @var string
-     */
     protected $returning_column = null;
 
     /**
      * @var array
      */
-    protected $parameters = [];
+    protected $cols = [];
 
     /**
      * @param $table_name string|null
@@ -58,7 +53,18 @@ class Insert extends Base
      */
     function set($key, $value)
     {
-        $this->parameters[$key] = $value;
+        $this->cols[$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @return $this
+     */
+    function returning($column)
+    {
+        $this->returning_column = $column;
 
         return $this;
     }
@@ -83,13 +89,18 @@ class Insert extends Base
     {
         return sprintf(
             "INSERT INTO %s (%s) VALUES (%s)%s",
-            $this->table_name,
-            implode(', ', array_keys($this->parameters)),
+            $this->tableName(),
+            implode(', ', array_keys($this->cols)),
             implode(', ', array_map(function($el) {
                 return sprintf(":%s", $el);
-            }, array_keys($this->parameters))),
-            $this->returning_column ? sprintf(" RETURNING %s", $this->returning_column) : ""
+            }, array_keys($this->cols))),
+            $this->buildReturning()
         );
+    }
+
+    protected function buildReturning()
+    {
+        return $this->returning_column ? sprintf(" RETURNING %s", $this->returning_column) : "";
     }
 
     /**
@@ -97,17 +108,7 @@ class Insert extends Base
      */
     function getPlaceholdersValues()
     {
-        return array_values($this->parameters);
+        return array_values($this->cols);
     }
 
-    /**
-     * @param $column
-     * @return $this
-     */
-    function returning($column)
-    {
-        $this->returning_column = $column;
-
-        return $this;
-    }
 }
