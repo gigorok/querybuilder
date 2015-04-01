@@ -55,13 +55,12 @@ abstract class Base
     }
 
     /**
-     * @param $key string
-     * @param $value
+     * @param $filters []
      * @return $this
      */
-    function where($key, $value)
+    function where($filters)
     {
-        $this->where[$key] = $value;
+        $this->where = array_merge($this->where, $filters);
 
         return $this;
     }

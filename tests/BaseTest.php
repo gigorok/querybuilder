@@ -17,7 +17,7 @@ class BaseTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->query_builder = new \QueryBuilder\QueryBuilder();
+        $this->query_builder = new \QueryBuilder\QueryBuilder($this->getPdo());
     }
 
     /**
@@ -26,6 +26,14 @@ class BaseTest extends \PHPUnit_Framework_TestCase
     protected function getQueryBuilder()
     {
         return $this->query_builder;
+    }
+
+    /**
+     * @return \PDO
+     */
+    protected function getPdo()
+    {
+        return new \PDO("pgsql:host=localhost");
     }
 
 }

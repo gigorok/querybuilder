@@ -11,8 +11,10 @@ class DeleteTest extends \BaseTest
     function testDelete()
     {
         $this->getQueryBuilder()->delete('my_table')
-            ->where('key3', '444')
-            ->where('key1', null);
+            ->where([
+                'key3' => '444',
+                'key1' => null
+            ]);
 
         $this->assertEquals(
             "DELETE FROM my_table WHERE key3 = :wkey3 AND key1 IS NULL",

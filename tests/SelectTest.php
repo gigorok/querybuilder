@@ -27,7 +27,7 @@ class SelectTest extends \BaseTest
     {
         $this->getQueryBuilder()->select('id')
             ->from('my_table')
-            ->where('key1', null);
+            ->where(['key1' => null]);
 
         $this->assertEquals(
             "SELECT id FROM my_table WHERE key1 IS NULL",
@@ -43,8 +43,7 @@ class SelectTest extends \BaseTest
     {
         $this->getQueryBuilder()->select(['*'])
             ->from('my_table')
-            ->where('key3', '444')
-            ->where('key1', null)
+            ->where(['key3' => '444', 'key1' => null])
             ->orderBy('key2', 'DESC')
             ->limit(5)
             ->offset(12);

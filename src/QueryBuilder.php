@@ -30,6 +30,19 @@ class QueryBuilder
     protected $query = null;
 
     /**
+     * @var \PDO
+     */
+    static $pdo = null;
+
+    /**
+     * @param \PDO $pdo
+     */
+    function __construct(\PDO $pdo)
+    {
+        self::$pdo = $pdo;
+    }
+
+    /**
      * @return string
      */
     function getQueryType()

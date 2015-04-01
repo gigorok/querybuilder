@@ -8,6 +8,7 @@
 
 namespace QueryBuilder\QueryBuilder;
 
+use QueryBuilder\Exception;
 use QueryBuilder\QueryBuilder;
 
 /**
@@ -64,6 +65,10 @@ class Insert extends Base
      */
     function returning($column)
     {
+        if(QueryBuilder::$pdo->getAttribute(\PDO::ATTR_DRIVER_NAME) != 'pgsql') {
+            throw new Exception("Returning statement supports only for pgsql PDO adapter");
+        }
+
         $this->returning_column = $column;
 
         return $this;
